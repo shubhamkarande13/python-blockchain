@@ -5,7 +5,9 @@ GENESIS_DATA = {
     'timestamp': 1,
     'last_hash': 'genesis_last_hash',
     'hash': 'genesis_hash',
-    'data': []
+    'data': [],
+    'difficulty': 3,
+    'nonce': 'genesis_nonce'
 }
 
 
@@ -15,11 +17,13 @@ class Block:
     Store transactions in a blockchain that supports cryptocurrency.
     '''
 
-    def __init__(self, timestamp, last_hash, hash, data):
+    def __init__(self, timestamp, last_hash, hash, data, difficulty, nonce):
         self.timestamp = timestamp
         self.last_hash = last_hash
         self.hash = hash
         self.data = data
+        self.difficulty = difficulty
+        self.nonce = nonce
 
     def __repr__(self):
         return (
@@ -27,7 +31,10 @@ class Block:
             f'timestamp:{self.timestamp},'
             f'last_hash:{self.last_hash},'
             f'hash:{self.hash},'
-            f'data:{self.data})'
+            f'data:{self.data},'
+            f'difficulty:{self.difficulty}',
+            f'nonce:{self.nonce}',            
+            )'
         )
 
     @staticmethod
@@ -46,7 +53,7 @@ class Block:
         """
         Generate the genesis block.
         """
-        return Block(1, 'genesis_last_hash', 'genesis_hash', [])
+        return Block(**GENESIS_DATA)
 
 
 def main():
