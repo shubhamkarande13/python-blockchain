@@ -73,7 +73,7 @@ class Block:
     def adjust_difficulty(last_block, new_timestamp):
         """
         Calculate the adjusted difficulty according to the MINE_RATE.
-        Increase the difficulty for slowly mined blocks.
+        Increase the difficulty for quickly mined blocks.
         Decrease the difficulty for slowly mined blocks.
         """
         if (new_timestamp - last_block.timestamp) < MINE_RATE:
@@ -96,8 +96,8 @@ class Block:
         if block.last_hash != last_block.hash:
             raise Exception('The block last_hash must be correct')
 
-        if hex_to_binary(block.hash)[0:block.difficulty != '0' * block.difficulty]:
-            raise Exception('The proof of requirement was not met')
+        if hex_to_binary(block.hash)[0:block.difficulty] != '0' * block.difficulty:
+            raise Exception('The proof of work requirement was not met')
         if abs(last_block.difficulty - block.difficulty) > 1:
             raise Exception('The block last_hash must only adjust by 1')
 
