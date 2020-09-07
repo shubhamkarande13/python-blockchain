@@ -13,11 +13,13 @@ GENESIS_DATA = {
     'nonce': 'genesis_nonce'
 }
 
+
 class Block:
     """
     Block: a unit of storage.
     Store transactions in a blockchain that supports a cryptocurrency.
     """
+
     def __init__(self, timestamp, last_hash, hash, data, difficulty, nonce):
         self.timestamp = timestamp
         self.last_hash = last_hash
@@ -82,10 +84,49 @@ class Block:
 
         return 1
 
+    @staticmethod
+    def is_valid_block(last_block, block):
+        """
+        Validate block by enforcing the following rules:
+            - the block must have the proper last_hash
+            - the block must meet the proof of work requirement
+            - the difficulty must only adjust by 1
+            - the block hash must be a valid combination of the block fields
+        """
+        if block.last_hash != last_block.hash:
+            raise Exception('The block last_hash must be correct')
+
+        if hex_to_binary(block.hash)[0:block.difficulty != '0' * block.difficulty]:
+            raise Exception('The proof of requirement was not met')
+        if abs(last_block.difficulty - block.difficulty) > 1:
+            raise Exception('The block last_hash must only adjust by 1')
+
+        reconstructed_hash = crypto_hash(
+            block.timestamp,
+            block.last_hash,
+            block.data,
+            block.nonce,
+            block.difficulty,
+        )
+
+        if block.hash != reconstructed_hash:
+            raise Exception('The block hash must be correct')
+
+
 def main():
     genesis_block = Block.genesis()
-    block = Block.mine_block(genesis_block, 'foo')
-    print(f'block: {block}')
+
+    bad_block = Block.mine_block(Block.genesis(), 'foo')
+    bad_block.last_hash = 'evil_data'
+    # genesis_block = Block.genesis()
+    # block = Block.mine_block(genesis_block, 'foo')
+    # print(f'block: {block}')
+
+    try:
+        Block.is_valid_block(genesis_block, bad_block)
+    except Exception as e:
+        print(f'is_valid_block: {e}')
+
 
 if __name__ == '__main__':
     main()
