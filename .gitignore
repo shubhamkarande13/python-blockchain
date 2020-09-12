@@ -2,3 +2,4 @@
 *__pycache__*
 *node_modules*
 env/lib/python3.7
+activate.bat
