@@ -42,7 +42,7 @@ class Block:
             f'nonce: {self.nonce})'
         )
 
-    def __eq__(self,other):
+    def __eq__(self, other):
         return self.__dict__ == other.__dict__
 
     def to_json(self):
@@ -77,6 +77,13 @@ class Block:
         Generate the genesis block.
         """
         return Block(**GENESIS_DATA)
+
+    @staticmethod
+    def from_json(block_json):
+        """
+        Deserialize a block's json back into a block instance.
+        """
+        return Block(**block_json)
 
     @staticmethod
     def adjust_difficulty(last_block, new_timestamp):
